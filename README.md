@@ -1,2 +1,0 @@
-# news_app
-ztf
