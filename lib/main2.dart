@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 // Uncomment lines 7 and 10 to view the visual layout at runtime.
 // import 'package:flutter/rendering.dart' show debugPaintSizeEnabled;
 
@@ -38,23 +39,22 @@ class HomeWidget extends StatelessWidget {
                     "山水",
                     style: TextStyle(fontSize: 20.0, color: Colors.red),
                   ),
-                  onTap: (){
+                  onTap: () {
                     print("点击");
                   },
-                  onDoubleTap: (){
+                  onDoubleTap: () {
                     print("双击");
                   },
-                  onLongPress:(){
+                  onLongPress: () {
                     print("长按");
                   },
-                  onLongPressStart: (longPressDetails){
-
-                  },
+                  onLongPressStart: (longPressDetails) {},
                 )
               ],
               alignment: Alignment.center,
             ),
             margin: const EdgeInsets.all(20.0),
+            transform: Matrix4.translationValues(10, 10, 50),
           ),
         );
       }));
@@ -143,6 +143,35 @@ class HomeWidget extends StatelessWidget {
         softWrap: true,
       ),
     );
+    Widget cardSection = Card(
+      margin: const EdgeInsets.all(10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[Icon(Icons.music_video), Text("音乐")],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[Icon(Icons.map), Text("音乐")],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[Icon(Icons.translate), Text("翻译")],
+            ),
+          ),
+        ],
+      ),
+    );
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -159,15 +188,18 @@ class HomeWidget extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          Image.asset(
-            'images/lake.jpg',
-            width: 600,
-            height: 240,
-            fit: BoxFit.cover,
+          ImageTapWidget(
+            child: Image.asset(
+              'images/lake.jpg',
+              width: 600,
+              height: 240,
+              fit: BoxFit.cover,
+            ),
           ),
           titleSection,
           buttonSection,
           textSection,
+          cardSection
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -183,6 +215,72 @@ class HomeWidget extends StatelessWidget {
       ),
 //        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
 //        floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+    );
+  }
+}
+
+class ImageTapWidget extends StatefulWidget {
+  final Widget child;
+  final Function onTap;
+
+  const ImageTapWidget({Key key, this.child, this.onTap}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return ImageTapWidgetState();
+  }
+}
+
+class ImageTapWidgetState extends State<ImageTapWidget> {
+  bool isDown = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    double width = size.width;
+    double height = size.height;
+    // TODO: implement build
+    return GestureDetector(
+//      child: AnimatedContainer(
+//        duration: Duration(milliseconds: 1000),
+//        child: Transform(
+//            transform: Matrix4.rotationZ(0.5),
+//            origin: Offset(width / 2, height / 2),
+//            child: widget.child),
+//        foregroundDecoration: BoxDecoration(
+//            color: isDown ? Colors.white.withOpacity(0.5) : Colors.transparent),
+//        padding:
+//            isDown ? const EdgeInsets.all(20.0) : const EdgeInsets.all(0.0),
+////        transform: Matrix4.,
+//      ),
+      child: AnimatedContainer(
+        alignment: Alignment.center,
+        duration: Duration(milliseconds: 1000),
+        child: widget.child,
+        foregroundDecoration: BoxDecoration(
+            color: isDown ? Colors.white.withOpacity(0.5) : Colors.transparent),
+        padding:
+            isDown ? const EdgeInsets.all(20.0) : const EdgeInsets.all(0.0),
+        curve: Curves.linear,
+      ),
+
+      onTap: widget.onTap,
+      onTapDown: (d) {
+        setState(() {
+          isDown = true;
+        });
+      },
+      onTapUp: (d) {
+        setState(() {
+          isDown = false;
+        });
+      },
+      onTapCancel: () {
+        setState(() {
+          isDown = false;
+        });
+      },
     );
   }
 }
