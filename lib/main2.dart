@@ -259,9 +259,9 @@ class ImageTapWidgetState extends State<ImageTapWidget> {
         duration: Duration(milliseconds: 1000),
         child: widget.child,
         foregroundDecoration: BoxDecoration(
-            color: isDown ? Colors.white.withOpacity(0.5) : Colors.transparent),
+            color: isDown ? Colors.white.withOpacity(0.5) : Colors.transparent,),
         padding:
-            isDown ? const EdgeInsets.all(20.0) : const EdgeInsets.all(0.0),
+            isDown ? const EdgeInsets.all(30.0) : const EdgeInsets.all(0.0),
         curve: Curves.linear,
       ),
 
