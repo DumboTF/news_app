@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+
+import 'user.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -31,6 +35,12 @@ class SecondScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('${this} hashCode=${this.hashCode}');
+    var user = User("a", "b");
+    var us = user.toString();
+    var uss = user.toJson().toString();
+    Map uMap = json.decode(us);
+    var u = User.fromJson(uMap);
+    print(u);
     return Scaffold(
       appBar: AppBar(
         title: Text('Second page'),
